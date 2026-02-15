@@ -87,7 +87,7 @@ export async function GET(
         const zipBlob = await zip.generateAsync({ type: 'uint8array' })
 
         // Return ZIP as download
-        return new NextResponse(zipBlob, {
+        return new NextResponse(Buffer.from(zipBlob) as unknown as BodyInit, {
             headers: {
                 'Content-Type': 'application/zip',
                 'Content-Disposition': `attachment; filename="${deviceId}_export.zip"`,

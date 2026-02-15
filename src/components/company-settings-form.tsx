@@ -27,7 +27,7 @@ const formSchema = z.object({
     houseNumber: z.string().min(1, "Hausnummer ist erforderlich"),
     postalCode: z.string().min(1, "PLZ ist erforderlich"),
     city: z.string().min(1, "Ort ist erforderlich"),
-    country: z.string().default("Deutschland"),
+    country: z.string().min(1, "Land ist erforderlich"),
     vatId: z.string().optional(),
     taxId: z.string().optional(),
     email: z.string().email("Ungültige E-Mail-Adresse"),

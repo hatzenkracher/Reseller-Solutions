@@ -116,7 +116,7 @@ export default async function DashboardPage() {
                       <Badge variant={device.status === 'SOLD' ? 'default' : device.status === 'REPAIR' ? 'destructive' : 'secondary'}>
                         {device.status}
                       </Badge>
-                      <div className="font-medium">{formatCurrency(device.purchase_price || device.purchasePrice)}</div>
+                      <div className="font-medium">{formatCurrency(device.purchase_price)}</div>
                     </div>
                   </div>
                 ))

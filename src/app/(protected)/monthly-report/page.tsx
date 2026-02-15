@@ -140,11 +140,11 @@ export default async function MonthlyReportPage({ searchParams }: MonthlyReportP
                                 return (
                                     <TableRow key={device.id}>
                                         <TableCell className="font-medium">{device.model} ({device.storage})</TableCell>
-                                        <TableCell>{formatCurrency(device.purchase_price || device.purchasePrice)}</TableCell>
-                                        <TableCell>{formatCurrency(device.sale_price || device.salePrice || 0)}</TableCell>
+                                        <TableCell>{formatCurrency(device.purchase_price)}</TableCell>
+                                        <TableCell>{formatCurrency(device.sale_price || 0)}</TableCell>
                                         <TableCell className="font-bold text-green-700">{formatCurrency(fin.netProfit)}</TableCell>
                                         <TableCell>
-                                            <Badge variant="outline">{(device.is_diff_tax ?? device.isDiffTax ?? true) ? "Diff. Best." : "Regelbesteuerung"}</Badge>
+                                            <Badge variant="outline">{(device.is_diff_tax ?? true) ? "Diff. Best." : "Regelbesteuerung"}</Badge>
                                         </TableCell>
                                     </TableRow>
                                 );
