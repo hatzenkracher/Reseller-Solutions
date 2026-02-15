@@ -1,0 +1,21 @@
+<svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1d4ed8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- White background shape -->
+  <rect x="20" y="40" width="160" height="65" rx="8" fill="white" opacity="0.12"/>
+  
+  <!-- Modern accent line -->
+  <line x1="40" y1="45" x2="160" y2="45" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+  
+  <!-- Two-tone title: RE (white) + SELLER (blue) -->
+  <text x="58" y="75" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="38" font-weight="800" fill="white" letter-spacing="1">RE</text>
+  <text x="88" y="75" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="38" font-weight="800" fill="url(#blueGradient)" letter-spacing="1">SELLER</text>
+  
+  <!-- Subtitle in white -->
+  <text x="100" y="95" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="500" fill="white" text-anchor="middle" letter-spacing="2" opacity="0.85">MANAGEMENT SYSTEM</text>
+</svg>

@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Device {
+  id           String    @id
+  // model: iPhone 12, 13 Pro, etc.
+  model        String
+  // storage: 64GB, 128GB, etc.
+  storage      String
+  // color: Blue, Midnight, etc.
+  color        String
+  // condition: NEW, USED, DEFECT
+  condition    String
+  // status: STOCK, REPAIR, SOLD
+  status       String
+  
+  // IMEI is optional initially but good to have
+  imei         String?   @unique
+  
+  // Dates
+  purchaseDate DateTime
+  repairDate   DateTime?
+  saleDate     DateTime?
+  shippingBuyDate DateTime?
+  shippingSellDate DateTime?
+
+  // Costs (stored as Float for simplicity, could use Decimal but SQLite stores as Real/Float anyway)
+  purchasePrice Float
+  repairCost    Float     @default(0)
+  shippingBuy   Float     @default(0)
+  shippingSell  Float     @default(0)
+
+  // Remote Sales
+  salePrice     Float?
+  buyerName     String?  // Deprecated but kept for backward compatibility
+  salesFees     Float     @default(0)  // eBay, Kleinanzeigen fees
+  platformOrderNumber String?  // Order/transaction number from platform
+  saleInvoiceNumber String?  // Invoice number for sale
+
+  // Tax
+  // If true, we calculate tax on margin. If false, tax on full sale price.
+  isDiffTax     Boolean   @default(true)
+  
+  // Defect details (JSON string or separate fields, simple fields are easier for now)
+  defects       String?   // "display,backcover,battery" comma separated or JSON
+
+  // Timestamps
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relations
+  documents     Document[]
+}
+
+model Document {
+  id        Int      @id @default(autoincrement())
+  
+  deviceId  String
+  device    Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  
+  filePath  String
+  category  String   // PAYPAL, INVOICE, CHAT, OTHER
+  
+  createdAt DateTime @default(now())
+}
+
+model CompanySettings {
+  id              Int      @id @default(autoincrement())
+  userId          String   @unique @default("default")  // For future multi-user support
+  
+  // Company Info
+  companyName     String
+  ownerName       String
+  street          String
+  houseNumber     String
+  postalCode      String
+  city            String
+  country         String   @default("Deutschland")
+  
+  // Tax Info
+  vatId           String?  // USt-IdNr
+  taxId           String?  // Steuer-ID
+  
+  // Contact
+  email           String
+  phone           String?
+  
+  // Logo
+  logoPath        String?  // Path to uploaded logo
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
