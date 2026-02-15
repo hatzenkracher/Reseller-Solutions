@@ -70,6 +70,7 @@ export async function upsertCompanyProfile(data: any) {
         }
 
         revalidatePath('/company-settings')
+        revalidatePath('/', 'layout')
         return { success: true, profile }
     } catch (error) {
         console.error('Failed to save company profile:', error)

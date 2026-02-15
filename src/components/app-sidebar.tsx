@@ -28,8 +28,20 @@ const sidebarItems = [
     },
 ]
 
-export function AppSidebar() {
+interface AppSidebarProps {
+    companyName?: string;
+    userEmail?: string;
+}
+
+export function AppSidebar({ companyName, userEmail }: AppSidebarProps) {
     const pathname = usePathname()
+
+    const displayName = companyName || userEmail || "User";
+    const initials = companyName
+        ? companyName.charAt(0).toUpperCase()
+        : userEmail
+            ? userEmail.charAt(0).toUpperCase()
+            : "U";
 
     return (
         <div className="flex flex-col h-screen w-64 bg-card border-r border-border/40 fixed left-0 top-0 z-40">
@@ -61,13 +73,18 @@ export function AppSidebar() {
             <div className="p-6 border-t border-border/40 space-y-3">
                 <div className="flex items-center gap-3 px-3 py-2 rounded-md bg-muted/30">
                     <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs">
-                        {typeof window !== 'undefined' && localStorage.getItem('user_email')?.charAt(0).toUpperCase() || 'U'}
+                        {initials}
                     </div>
                     <div className="flex-1 overflow-hidden">
                         <p className="text-sm font-medium truncate">
-                            {typeof window !== 'undefined' && localStorage.getItem('user_email') || 'User'}
+                            {displayName}
                         </p>
-                        <p className="text-xs text-muted-foreground truncate">Account</p>
+                        {companyName && userEmail && (
+                            <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
+                        )}
+                        {!companyName && (
+                            <p className="text-xs text-muted-foreground truncate">Account</p>
+                        )}
                     </div>
                 </div>
                 <form action="/api/auth/signout" method="POST" className="w-full">
@@ -83,3 +100,4 @@ export function AppSidebar() {
         </div>
     )
 }
+
