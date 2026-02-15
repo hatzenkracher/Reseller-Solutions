@@ -10,7 +10,7 @@ import { type DbDevice, parseNumber, parseDate } from '@/lib/device-transforms'
 export interface DeviceFilters {
     dateFrom?: string
     dateTo?: string
-    dateType?: 'created_at' | 'sale_date'
+    dateType?: 'created_at' | 'sale_date' | 'purchase_date'
 }
 
 // Export device type (snake_case as returned from DB)
@@ -34,7 +34,7 @@ export async function getDevices(filters?: DeviceFilters): Promise<Device[]> {
 
         // Apply date filters
         if (filters?.dateFrom || filters?.dateTo) {
-            const dateField = filters?.dateType === 'sale_date' ? 'sale_date' : 'created_at'
+            const dateField = filters?.dateType === 'sale_date' ? 'sale_date' : filters?.dateType === 'created_at' ? 'created_at' : 'purchase_date'
 
             if (filters.dateFrom) {
                 query = query.gte(dateField, filters.dateFrom)

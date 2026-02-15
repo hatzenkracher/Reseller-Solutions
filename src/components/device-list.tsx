@@ -55,8 +55,8 @@ export function DeviceList({ devices }: DeviceListProps) {
     const [statusFilter, setStatusFilter] = useState<string>("ALL");
     const [dateFrom, setDateFrom] = useState(searchParams.get('dateFrom') || "");
     const [dateTo, setDateTo] = useState(searchParams.get('dateTo') || "");
-    const [dateType, setDateType] = useState<'created_at' | 'sale_date'>(
-        (searchParams.get('dateType') as 'created_at' | 'sale_date') || 'created_at'
+    const [dateType, setDateType] = useState<'created_at' | 'sale_date' | 'purchase_date'>(
+        (searchParams.get('dateType') as 'created_at' | 'sale_date' | 'purchase_date') || 'purchase_date'
     );
     const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
 
@@ -75,7 +75,7 @@ export function DeviceList({ devices }: DeviceListProps) {
             params.delete('dateTo');
         }
 
-        if (newDateType && newDateType !== 'created_at') {
+        if (newDateType && newDateType !== 'purchase_date') {
             params.set('dateType', newDateType);
         } else {
             params.delete('dateType');
@@ -94,7 +94,7 @@ export function DeviceList({ devices }: DeviceListProps) {
         updateFilters(dateFrom, value, dateType);
     };
 
-    const handleDateTypeChange = (value: 'created_at' | 'sale_date') => {
+    const handleDateTypeChange = (value: 'created_at' | 'sale_date' | 'purchase_date') => {
         setDateType(value);
         updateFilters(dateFrom, dateTo, value);
     };
@@ -146,7 +146,7 @@ export function DeviceList({ devices }: DeviceListProps) {
     const resetFilters = () => {
         setDateFrom("");
         setDateTo("");
-        setDateType('created_at');
+        setDateType('purchase_date');
         router.push('/devices');
     };
 
@@ -338,6 +338,7 @@ export function DeviceList({ devices }: DeviceListProps) {
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
+                                <SelectItem value="purchase_date">Einkaufsdatum</SelectItem>
                                 <SelectItem value="created_at">Erstellungsdatum</SelectItem>
                                 <SelectItem value="sale_date">Verkaufsdatum</SelectItem>
                             </SelectContent>
