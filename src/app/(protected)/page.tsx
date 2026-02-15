@@ -34,7 +34,7 @@ export default async function DashboardPage() {
     <div className="container mx-auto py-10 space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-primary">Dashboard</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-white">Dashboard</h1>
           <p className="text-muted-foreground mt-2">Überblick für {new Date().toLocaleDateString('de-DE', { month: 'long', year: 'numeric' })}</p>
         </div>
         <div className="space-x-4">

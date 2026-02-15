@@ -17,7 +17,7 @@ const sidebarItems = [
         icon: Smartphone,
     },
     {
-        title: "Monatsbericht",
+        title: "Monatsübersicht",
         href: "/monthly-report",
         icon: FileText,
     },
@@ -46,10 +46,10 @@ export function AppSidebar({ companyName, userEmail }: AppSidebarProps) {
     return (
         <div className="flex flex-col h-screen w-64 bg-card border-r border-border/40 fixed left-0 top-0 z-40">
             <div className="p-6 border-b border-border/40">
-                <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                    Reseller
+                <h1 className="text-2xl font-bold text-white">
+                    Reseller Solutions
                 </h1>
-                <p className="text-xs text-muted-foreground mt-1">Management System</p>
+                <p className="text-xs text-white/70 mt-1">Management System</p>
             </div>
 
             <div className="flex-1 py-6 px-3 space-y-1">

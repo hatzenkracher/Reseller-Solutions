@@ -36,7 +36,7 @@ export default async function MonthlyReportPage({ searchParams }: MonthlyReportP
     return (
         <div className="container mx-auto py-10 space-y-8">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold tracking-tight text-primary">Monatsübersicht</h1>
+                <h1 className="text-3xl font-bold tracking-tight text-white">Monatsübersicht</h1>
                 <MonthSelector />
             </div>
 
