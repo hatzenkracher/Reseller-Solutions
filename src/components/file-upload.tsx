@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Upload, File, Trash2, Download, FileText, Receipt, MessageSquare, FileCheck } from 'lucide-react'
+import { Upload, File, Trash2, Download, FileText, Receipt, MessageSquare, FileCheck, ShoppingCart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -27,10 +27,11 @@ interface FileUploadProps {
 }
 
 const CATEGORY_LABELS: Record<string, { label: string; icon: any; color: string }> = {
-    PAYPAL: { label: 'PayPal-Beleg', icon: Receipt, color: 'bg-blue-500/15 text-blue-600' },
+    PAYPAL: { label: 'Zahlungsbeleg', icon: Receipt, color: 'bg-blue-500/15 text-blue-600' },
     INVOICE: { label: 'Rechnung', icon: FileText, color: 'bg-green-500/15 text-green-600' },
-    CHAT: { label: 'Chatverlauf', icon: MessageSquare, color: 'bg-purple-500/15 text-purple-600' },
+    CHAT: { label: 'Chats mit Verkäufer', icon: MessageSquare, color: 'bg-purple-500/15 text-purple-600' },
     EIGENBELEG: { label: 'Eigenbeleg', icon: FileCheck, color: 'bg-amber-500/15 text-amber-600' },
+    SALES_AD: { label: 'Verkaufsanzeige', icon: ShoppingCart, color: 'bg-teal-500/15 text-teal-600' },
     OTHER: { label: 'Sonstiges', icon: File, color: 'bg-gray-500/15 text-gray-600' },
 }
 
@@ -39,30 +40,43 @@ export function FileUpload({ deviceId, files: initialFiles }: FileUploadProps) {
     const [category, setCategory] = useState<string>('OTHER')
     const router = useRouter()
 
+    const isMultiUpload = category === 'CHAT' || category === 'SALES_AD'
+
     async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
-        const file = e.target.files?.[0]
-        if (!file) return
+        const selectedFiles = e.target.files
+        if (!selectedFiles || selectedFiles.length === 0) return
 
         setUploading(true)
         try {
-            const formData = new FormData()
-            formData.append('file', file)
-            formData.append('category', category)
+            let successCount = 0
+            let errorMsg = ''
 
-            const result = await uploadDeviceFile(deviceId, formData)
+            for (let i = 0; i < selectedFiles.length; i++) {
+                const file = selectedFiles[i]
+                const formData = new FormData()
+                formData.append('file', file)
+                formData.append('category', category)
 
-            if (result.success) {
-                toast.success(`Datei hochgeladen: ${result.filename}`)
-                setCategory('OTHER') // Reset category
+                const result = await uploadDeviceFile(deviceId, formData)
+
+                if (result.success) {
+                    successCount++
+                } else {
+                    errorMsg = result.error || 'Upload fehlgeschlagen'
+                }
+            }
+
+            if (successCount > 0) {
+                toast.success(`${successCount} Datei(en) hochgeladen`)
                 router.refresh()
-            } else {
-                toast.error(result.error || 'Upload fehlgeschlagen')
+            }
+            if (errorMsg) {
+                toast.error(errorMsg)
             }
         } catch (error) {
             toast.error('Upload fehlgeschlagen')
         } finally {
             setUploading(false)
-            // Reset input
             e.target.value = ''
         }
     }
@@ -115,13 +129,19 @@ export function FileUpload({ deviceId, files: initialFiles }: FileUploadProps) {
                                 <SelectItem value="PAYPAL">
                                     <div className="flex items-center gap-2">
                                         <Receipt className="h-4 w-4" />
-                                        PayPal-Beleg
+                                        Zahlungsbeleg
                                     </div>
                                 </SelectItem>
                                 <SelectItem value="CHAT">
                                     <div className="flex items-center gap-2">
                                         <MessageSquare className="h-4 w-4" />
-                                        Chatverlauf (Kleinanzeigen)
+                                        Chats mit Verkäufer
+                                    </div>
+                                </SelectItem>
+                                <SelectItem value="SALES_AD">
+                                    <div className="flex items-center gap-2">
+                                        <ShoppingCart className="h-4 w-4" />
+                                        Verkaufsanzeige
                                     </div>
                                 </SelectItem>
                                 <SelectItem value="EIGENBELEG">
@@ -156,12 +176,14 @@ export function FileUpload({ deviceId, files: initialFiles }: FileUploadProps) {
                             onChange={handleFileUpload}
                             disabled={uploading}
                             accept=".pdf,.png,.jpg,.jpeg,.webp,.txt"
+                            multiple={isMultiUpload}
                         />
                     </div>
                 </div>
 
                 <p className="text-xs text-muted-foreground">
                     Erlaubte Dateitypen: PDF, PNG, JPG, WEBP, TXT • Max. 10 MB
+                    {isMultiUpload && ' • Mehrfach-Upload möglich'}
                 </p>
 
                 {/* Files List */}

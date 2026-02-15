@@ -14,14 +14,15 @@ const ALLOWED_MIME_TYPES = [
     'text/plain',
 ]
 
-type FileCategory = 'PAYPAL' | 'INVOICE' | 'CHAT' | 'EIGENBELEG' | 'OTHER'
+type FileCategory = 'PAYPAL' | 'INVOICE' | 'CHAT' | 'EIGENBELEG' | 'SALES_AD' | 'OTHER'
 
 // Category to German filename prefix mapping
 const CATEGORY_FILENAME_MAP: Record<FileCategory, string> = {
     INVOICE: 'Rechnung',
     PAYPAL: 'Zahlungsbeleg',
-    CHAT: 'KleinanzeigenChat',
+    CHAT: 'VerkaeuferChat',
     EIGENBELEG: 'Eigenbeleg',
+    SALES_AD: 'Verkaufsanzeige',
     OTHER: 'Dokument',
 }
 

@@ -74,9 +74,10 @@ export function DocumentList({ deviceId, documents }: DocumentListProps) {
                                 <SelectValue placeholder="Kategorie" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="PAYPAL">PayPal Beleg</SelectItem>
+                                <SelectItem value="PAYPAL">Zahlungsbeleg</SelectItem>
                                 <SelectItem value="INVOICE">Rechnung</SelectItem>
-                                <SelectItem value="CHAT">Kleinanzeigen Chat</SelectItem>
+                                <SelectItem value="CHAT">Chats mit Verkäufer</SelectItem>
+                                <SelectItem value="SALES_AD">Verkaufsanzeige</SelectItem>
                                 <SelectItem value="OTHER">Sonstiges</SelectItem>
                             </SelectContent>
                         </Select>
